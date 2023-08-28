@@ -11,7 +11,7 @@ TEST_SRC_DIR = ./tests
 OBJ_DIR = $(SRC_DIR)/objs
 TEST_OBJ_DIR = $(TEST_SRC_DIR)/test_objs
 
-GCOV_DIR = $(SRC_DIR)/gcov_report
+GCOV_DIR = gcov_report
 GCOV_OBJ_DIR = $(GCOV_DIR)/objs
 
 SRC = $(wildcard $(SRC_DIR)/s21_*.c)
