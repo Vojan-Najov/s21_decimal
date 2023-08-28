@@ -1,0 +1,127 @@
+using System;
+
+public class Program
+{
+	public static void Main()
+	{
+		decimal[] num1 = {
+			0M,
+			new Decimal(0, 0, 0, false,3),
+			1.5M,
+			0.000000000000001M,
+			162216.127212M,
+			12809098998909.89894M,
+			90987987978798797979.37337M,
+			decimal.MinValue,
+			decimal.MaxValue,
+			decimal.MaxValue,
+			decimal.MaxValue,
+			79228162514264.337593543950335M,
+			-79228.162514264337593543950335M,
+			0.9999999M,
+			0.00000000000000876M,
+			-0.000000000000000003188139318311M,
+			0.000000000000000000099979975858685M
+			};
+		decimal[] num2 = {
+			0M,
+			new Decimal(0, 0, 0, true, 5),
+			2M,	
+			10000000000M,
+			0.0827M,
+			0.000000000377223M,
+			989M,
+			-1M,
+			0.5M,
+			0.0345M,
+			0.900000000000000000000000001M,
+			-79228162514264.337593543950335M,
+			79228.162514264337593543950335M ,
+			21821893.8M,
+			-9996986598458.7548M,
+			0.000000000137318313178M,
+			0.000000000137318313178M,
+		};
+		decimal[] err_num1 = {
+			-1.6M,
+			10.5M,
+			-1.1M, 
+			10.6M,
+		};
+		decimal[] err_num2 = {
+			decimal.MaxValue,	
+			decimal.MaxValue,	
+			decimal.MinValue,	
+			decimal.MinValue,	
+		};
+
+		Console.WriteLine("{0,10:X8}  {1,10:X8}  {2,10:X8}  {3,10:X8}       {4}",
+						  "Bits[0]", "Bits[1]", "Bits[2]", "Bits[3]", "Argument");
+		Console.WriteLine(); Console.WriteLine("static s21_decimal num1[] = {");
+		int i = 0;
+		foreach (var value in num1) {
+			int[] bits = decimal.GetBits(value);
+			Console.WriteLine("{{{{0x{0,8:X8}, 0x{1,8:X8}, 0x{2,8:X8}, 0x{3,8:X8} }}}}, //i={4,2}: {5}",
+							  bits[0], bits[1], bits[2], bits[3], i, value);
+			++i;
+		}
+        Console.WriteLine("};");
+        Console.WriteLine();
+
+		Console.WriteLine("static s21_decimal num2[] = {");
+		i = 0;
+        foreach (var value in num2) {
+			int[] bits = decimal.GetBits(value);
+            Console.WriteLine("{{{{ 0x{0,8:X8}, 0x{1,8:X8}, 0x{2,8:X8}, 0x{3,8:X8} }}}}, //i={4,2}: {5}",
+							  bits[0], bits[1], bits[2], bits[3], i, value);
+        	++i;
+		}
+        Console.WriteLine("};");
+        Console.WriteLine();
+		
+		Console.WriteLine("static s21_decimal result[] = {");
+        i = 0;
+		foreach (var value in num1) {
+			decimal tmp = value * num2[i];
+			
+			int[] bits = decimal.GetBits(tmp);
+            Console.WriteLine("{{{{ 0x{0,8:X8}, 0x{1,8:X8}, 0x{2,8:X8}, 0x{3,8:X8} }}}}, //i={4,2}: {5}",
+							  bits[0], bits[1], bits[2], bits[3], i, tmp);
+   	     	++i;
+		}
+        Console.WriteLine("};");
+        Console.WriteLine();
+		
+		Console.WriteLine(); Console.WriteLine("static s21_decimal err_num1[] = {");
+		foreach (var value in err_num1) {
+			int[] bits = decimal.GetBits(value);
+			Console.WriteLine("{{{{0x{0,8:X8}, 0x{1,8:X8}, 0x{2,8:X8}, 0x{3,8:X8} }}}}, // {4}",
+							  bits[0], bits[1], bits[2], bits[3], value);
+		}
+        Console.WriteLine("};");
+        Console.WriteLine();
+
+		Console.WriteLine("static s21_decimal err_num2[] = {");
+        foreach (var value in err_num2) {
+			int[] bits = decimal.GetBits(value);
+            Console.WriteLine("{{{{ 0x{0,8:X8}, 0x{1,8:X8}, 0x{2,8:X8}, 0x{3,8:X8} }}}}, //{4}",
+							  bits[0], bits[1], bits[2], bits[3], value);
+        }
+        Console.WriteLine("};");
+        Console.WriteLine();
+		
+		Console.WriteLine("static int err_result[] = {");
+        i = -1;
+		foreach (var value in err_num1) {
+			++i;
+			try {
+				decimal tmp = value * err_num2[i];
+			} catch (Exception e) {
+				Console.WriteLine("{0},",
+								  ((value > 0 && err_num2[i] > 0) ||
+								  (value < 0 && err_num2[i] < 0)) ? 1 : 2);
+			}
+        }
+        Console.WriteLine("};");
+	}
+}

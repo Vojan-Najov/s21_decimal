@@ -1,0 +1,158 @@
+using System;
+
+public class Program
+{
+	public static void Main()
+	{
+		decimal[] num1 = {
+			10M,
+			10M,
+            182M,
+            127217M,
+            -212M,
+            -218218.87M,
+            0M,
+            1219.92M,
+            -19219.19M,
+            1281828112.2118M,
+            1281828112.2118M,
+            873M,
+            decimal.MaxValue,
+            0.00000000000122121M,
+            0.000000000001311331M,
+			0.9999999M,
+			0.9999999M,
+			-0.9999999M,
+			decimal.MinValue,
+			1.01M,
+			7464.8999890549484848686575896M,
+			985958.996969684893M,
+			99868669.86696955886M,
+			100.000M,
+			83834.86M,
+			364934284M,
+			-364934284M,
+		};
+		decimal[] num2 = {
+        	5M,
+            20010M,
+            101M,
+            83737172M,
+            -17M,
+            -2172182112.29M,
+            10M,
+            -18281.281M,
+            29192M,
+            218218218.123M,
+            21291.92921M,
+            891271M,
+            765.3M,
+            0.000000000000000000000922121M,
+            38381.182128M,
+			1M,
+			-0.999998989M,
+			1.000001019873M,
+			2.5M,
+			decimal.MinValue,
+			57584.847M,
+			18.182M,
+			124267631731831713.3381M,
+			5M,
+			2M,
+			55478M,
+			-6578M,
+		};
+		decimal[] err_num1 = {
+			decimal.MaxValue,
+			decimal.MaxValue,
+			decimal.MinValue,
+			decimal.MinValue,
+			47728272.8382M,
+			-84893983.12M,
+			0.0000M,
+		};
+		decimal[] err_num2 = {
+			0.000000786M,
+			-0.02M,
+			0.009889M,
+			-0.00765M,
+			0M,
+			-0.00000000M,
+			0M,
+		};
+
+		Console.WriteLine("{0,10:X8}  {1,10:X8}  {2,10:X8}  {3,10:X8}       {4}",
+						  "Bits[0]", "Bits[1]", "Bits[2]", "Bits[3]", "Argument");
+		Console.WriteLine();
+		Console.WriteLine("static s21_decimal num1[] = {");
+        int i = 0;
+		foreach (var value in num1) {
+			int[] bits = decimal.GetBits(value);
+            Console.WriteLine("{{{{0x{0,8:X8}, 0x{1,8:X8}, 0x{2,8:X8}, 0x{3,8:X8} }}}}, //{4,2} {5}",
+							  bits[0], bits[1], bits[2], bits[3], i, value);
+			++i;
+		}
+        Console.WriteLine("};");
+        Console.WriteLine();
+         
+		i = 0;
+		Console.WriteLine("static s21_decimal num2[] = {");
+        foreach (var value in num2) {
+        	int[] bits = decimal.GetBits(value);
+        	Console.WriteLine("{{{{ 0x{0,8:X8}, 0x{1,8:X8}, 0x{2,8:X8}, 0x{3,8:X8} }}}}, //{4,2} {5}",
+							  bits[0], bits[1], bits[2], bits[3], i, value);
+        	++i;
+		}
+        Console.WriteLine("};");
+        Console.WriteLine();
+		
+        Console.WriteLine("static s21_decimal result[] = {");
+        i = 0;
+        foreach (var value in num1) {
+			decimal tmp = value / num2[i];
+            int[] bits = decimal.GetBits(tmp);
+            Console.WriteLine("{{{{ 0x{0,8:X8}, 0x{1,8:X8}, 0x{2,8:X8}, 0x{3,8:X8} }}}}, //{4,2}: {5}",
+							  bits[0], bits[1], bits[2], bits[3], i, tmp);
+            ++i;
+        }
+        Console.WriteLine("};");
+		Console.WriteLine();
+		
+		Console.WriteLine("static s21_decimal err_num1[] = {");
+        i = 0;
+		foreach (var value in err_num1) {
+			int[] bits = decimal.GetBits(value);
+            Console.WriteLine("{{{{0x{0,8:X8}, 0x{1,8:X8}, 0x{2,8:X8}, 0x{3,8:X8} }}}}, //{4,2} {5}",
+							  bits[0], bits[1], bits[2], bits[3], i, value);
+			++i;
+		}
+        Console.WriteLine("};");
+        Console.WriteLine();
+         
+		i = 0;
+		Console.WriteLine("static s21_decimal err_num2[] = {");
+        foreach (var value in err_num2) {
+        	int[] bits = decimal.GetBits(value);
+        	Console.WriteLine("{{{{ 0x{0,8:X8}, 0x{1,8:X8}, 0x{2,8:X8}, 0x{3,8:X8} }}}}, //{4,2} {5}",
+							  bits[0], bits[1], bits[2], bits[3], i, value);
+        	++i;
+		}
+        Console.WriteLine("};");
+        Console.WriteLine();
+		
+        Console.WriteLine("static int err_result[] = {");
+        i = 0;
+        foreach (var value in err_num1) {
+			try {
+				decimal tmp = value / err_num2[i];
+			} catch (DivideByZeroException e) {
+					Console.WriteLine("3,");
+			} catch (OverflowException e) {
+					Console.WriteLine("{0},",
+						((err_num1[i] > 0 && err_num2[i] > 0) || (err_num1[i] < 0 && err_num2[i] < 0)) ? 1 : 2);
+			}
+            ++i;
+        }
+        Console.WriteLine("};");
+	}
+}

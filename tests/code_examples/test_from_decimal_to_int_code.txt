@@ -1,0 +1,68 @@
+using System;
+
+public class Program
+{
+	public static void Main()
+	{
+		decimal[] values = {
+			1m,
+			1.10m,
+			1.111m,
+			1.999999999m,
+			123m,
+			new decimal(123000, 0, 0, false,3),
+			123.999m,
+			4294967295.999m,
+			4294967296m,
+			-4294967296m,
+			2147483647.999m,
+			2147483648m,
+			-0.999m,
+			-1m,
+			-2147483648.999m,
+			-2147483648M,
+			-2147483649m,
+			new Decimal(1000000, 10000, 10000, false, 0),
+			new Decimal(1000000, 10000, 10000, true, 0),
+			new Decimal(1000000, 0, 10000, false, 0),
+			new Decimal(1000000, 0, 10000, true, 0),
+			new Decimal(12121, 212162617, 0, false, 0),
+			new Decimal(1218, 22121828, 0, true, 0),
+			new Decimal(0, 0, 0, true, 0),
+			new Decimal(0, 0, 0, false, 0),
+			15.1M,
+			15.49M,
+			15.51M,
+			-15.1M,
+			-15.49M,
+			-15.51M,
+			156.1M,
+			156.49M,
+			156.51M,
+			-156.1M,
+			-156.49M,
+			-156.51M,
+		};
+		
+		Console.WriteLine("{0,10:X8}  {1,10:X8}  {2,10:X8}  {3,10:X8}        {4}",
+							"Bits[0]", "Bits[1]", "Bits[2]", "Bits[3]", "Argument");
+		
+		Console.WriteLine("static s21_decimal src[] = {");
+		foreach (var value in values) {
+			int[] bits = decimal.GetBits(value);
+			Console.WriteLine("{{{{ 0x{0,8:X8}, 0x{1,8:X8}, 0x{2,8:X8}, 0x{3,8:X8} }}}}, // {4}",
+							  bits[0], bits[1], bits[2], bits[3], value);
+			}
+		Console.WriteLine("};");
+		Console.WriteLine();
+		
+		Console.WriteLine("static int dst[] = {");
+		foreach (var value in values) {
+			try {
+				int number = Decimal.ToInt32(value);
+				Console.WriteLine("{0},", number);
+			} catch (OverflowException e) {}
+		}
+		Console.WriteLine("};");
+	}
+}

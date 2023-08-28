@@ -1,0 +1,43 @@
+using System;
+
+public class Program
+{
+	public static void Main()
+	{
+		decimal[] values = {
+			9.913M,
+			0M, 1M, -1M, 2M, -2M,
+			1.5M, -1.5M, 0.9M, -0.9M,
+			-0.1M, 0.1M, -1.1M, 1.1M,
+			12.765M, -12.045M, 9.9999M,
+			decimal.MaxValue, decimal.MinValue,
+			new Decimal(211,31813,31831, true, 8),
+			new Decimal(3829328, 8328323, 3282383, false, 2),
+			new Decimal(0, 0, 0, true, 10),
+			326236.328238M,
+			-995958.5741M,
+			12621621621.2821812M,
+			218218.21721721712M,
+			0.00000000000000000001M,
+		};
+		
+		Console.WriteLine("{0,10:X8}  {1,10:X8}  {2,10:X8}  {3,10:X8}        {4}",
+							"Bits[0]", "Bits[1]", "Bits[2]", "Bits[3]", "Argument");
+		
+		Console.WriteLine("static s21_decimal src[] = {");
+		foreach (var value in values) {
+			int[] bits = Decimal.GetBits(value);
+			Console.WriteLine("{{{{ 0x{0,8:X8}, 0x{1,8:X8}, 0x{2,8:X8}, 0x{3,8:X8} }}}}, // {4,-10}",
+							  bits[0], bits[1], bits[2], bits[3], value);
+		}
+		Console.WriteLine("};");
+		Console.WriteLine();
+
+		Console.WriteLine("static float dst[] = {");
+		foreach (var value in values) {
+			double tmp = Decimal.ToDouble(value);
+			Console.WriteLine("{0}f,", ((float)tmp).ToString("G70"));
+		}
+		Console.WriteLine("};");
+	}
+}

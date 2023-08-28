@@ -1,0 +1,156 @@
+using System;
+
+public class Program
+{
+	public static void Main()
+	{
+		decimal[] lhs = {
+			0M,
+			0.000M,
+			new Decimal(0, 0, 0, true, 10),
+			1M,
+			-1M,
+			-1.2M,
+			2.43M,
+			decimal.MaxValue,
+			decimal.MaxValue - 1,
+			1999M,
+			new Decimal(15, 20, 0, true, 10),
+			new Decimal(15, 20, 1838, true, 10),
+			new Decimal(15, 20, 1838, false, 2),
+			21621621.21712727M,
+			21621621.21712727M,
+			21621621.21712727M,
+			-999494.3838384M,
+			-999494.3838384M,
+			-999494.3838384M,
+			new Decimal(134, 84, 19, false, 1),
+			new Decimal(133, 84, 19, false, 1),
+			-458.7M,
+			0.00M,
+			0.0000123M,
+			-128.37M,
+			1283.00124M,
+			-383.456M,
+			-383.456M,
+			-383.456M,
+			1212217.12723M,
+			1212217.12723M,
+			1212217.12723M,
+			-18.2M,
+			-19.4M,
+			189.14M,
+			1654.167M,
+			1234.837M,
+			-16.123M,
+			-18.123M,
+			-17.223M,
+			-17.123M,
+			-17.122M,
+			-18.123M,
+			-18.122M,
+			-18.124M,
+			16.123M,
+			18.123M,
+			17.223M,
+			17.123M,
+			17.122M,
+			18.123M,
+			18.122M,
+			18.124M,
+			new Decimal(0, 0, 0, true, 3), 
+			new Decimal(15400, 0, 0, true, 2), 
+			new Decimal(154, 0, 0, false, 0), 
+			new Decimal(15400, 13, 11, true, 2),
+			123.124M,
+			1M,
+			
+		};
+		decimal[] rhs = {
+			0M,	
+			0.0M,
+			new Decimal(0, 0, 0, false, 3),
+			1M,
+			-1M,
+			-1.12M,
+			0.244M,
+			decimal.MaxValue - 1,
+			decimal.MaxValue,
+			20000M,
+			new Decimal(13, 20, 0, true, 10),
+			new Decimal(15, 19, 1838, true, 10),
+			new Decimal(15, 20, 1839, false, 2),
+			21621621.21712727M,
+			21621621.21712728M,
+			21621621.21712726M,
+			-999494.3838384M,
+			-999494.3838383M,
+			-999494.3838385M,
+			new Decimal(13400, 84, 19, false, 3),
+			new Decimal(13400, 84, 19, false, 3),
+			-45.87M,
+			13.4M,
+			0.0M,
+			-128.37M,
+			1283.002M,
+			-383.456M,
+			-383.455M,
+			-383.457M,
+			1212217.12723M,
+			1212217.12722M,
+			1212217.12724M,
+			-18.1M,
+			19.4M,
+			-189.14M,
+			1654.167M,
+			1233.837M,
+			-17.123M,
+			-17.123M,
+			-17.123M,
+			-17.123M,
+			-17.123M,
+			-17.123M,
+			-17.123M,
+			-17.123M,
+			17.123M,
+			17.123M,
+			17.123M,
+			17.123M,
+			17.123M,
+			17.123M,
+			17.123M,
+			17.123M,
+			new Decimal(0, 0, 0, false, 4), 
+			new Decimal(154, 0, 0, true, 0),
+			new Decimal(15400, 0, 0, false, 2), 
+			new Decimal(154, 13, 11, true, 2), 
+			0M,
+			0.0000000M,
+		};
+		Console.WriteLine("static s21_decimal lhs[] = {");
+		foreach (var value in lhs) {
+			int[] bits = Decimal.GetBits(value);
+			Console.WriteLine("{{{{ 0x{0,8:X8}, 0x{1,8:X8}, 0x{2,8:X8}, 0x{3,8:X8} }}}}, // {4,-10}",
+							  bits[0], bits[1], bits[2], bits[3], value);
+		}
+		Console.WriteLine("};");
+		Console.WriteLine();
+		Console.WriteLine("static s21_decimal rhs[] = {");
+		foreach (var value in rhs) {
+			int[] bits = Decimal.GetBits(value);
+			Console.WriteLine("{{{{ 0x{0,8:X8}, 0x{1,8:X8}, 0x{2,8:X8}, 0x{3,8:X8} }}}}, // {4,-10}",
+							  bits[0], bits[1], bits[2], bits[3], value);
+		}
+		Console.WriteLine("};");
+		Console.WriteLine();
+
+		Console.WriteLine("static int result[] = {");
+		int i = -1;
+		foreach (var value in lhs) {
+			++i;
+			bool tmp = value <= rhs[i];
+			Console.WriteLine("{0},", (tmp == true) ? 1 : 0);
+		}
+		Console.WriteLine("};");
+	}
+}

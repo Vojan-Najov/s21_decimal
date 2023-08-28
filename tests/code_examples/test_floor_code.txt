@@ -1,0 +1,85 @@
+using System;
+
+public class Program
+{
+	public static void Main()
+	{
+		Decimal[] values = {
+			0M,
+			1M,
+			-1M,
+			2172188218.2812812M,
+			-2181821.218210M,
+			decimal.MaxValue,
+			decimal.MinValue,
+			new Decimal(0, 0, 0, false, 2),
+			new Decimal(0, 0, 0, true, 2),
+			new Decimal(1000000, 0, 0, false, 2),
+			new Decimal(1000000, 0, 0, true, 2),
+			new Decimal(1127, 122, 0, false, 4),
+			new Decimal(1127, 122, 0, true, 0),
+			new Decimal(1127, 122, 12821, false, 1),
+			new Decimal(1127, 122, 2121712, true, 2),
+			new Decimal(1000000, 10000, 10000, true, 5),
+			14M,
+			-15M,
+			100000M,
+			1.1M,
+			-1.1M,
+			-1.49M,
+			-1.5M,
+			-1.51M,
+			1.49M,
+			1.5M,
+			1.51M
+			-1.34M,
+			1.34M,
+			1.765M,
+			-1.765M,
+			2.49M,
+			2.5M,
+			2.51M,
+			-2.49M,
+			-2.5M,
+			-2.51M,
+			13.50000000000M,
+			14.5000000000M,
+			122182182271212611.51M,
+			122182182271212611.49M,
+			-122182182271212611.51M,
+			-122182182271212611.49M,
+			123456.789M,
+			0.123456789M,
+			0.000000000123456789M,
+			0.000000000000000000123456789M,
+			4294.967295M,
+			184467440737095.51615M,
+			-0.000000000000000000123456789M,
+			-4294.967295M,
+			7.9228162514264337593543950335M,
+			-184467440737095.51615M,
+			-7.9228162514264337593543950335M,
+		};
+		
+		Console.WriteLine("{0,10:X8}  {1,10:X8}  {2,10:X8}  {3,10:X8}        {4}",
+							"Bits[0]", "Bits[1]", "Bits[2]", "Bits[3]", "Argument");
+		Console.WriteLine("static s21_decimal arr[] = {");
+		
+		foreach (var value in values) {
+			int[] bits = decimal.GetBits(value);
+			Console.WriteLine("{{{{0x{0,8:X8}, 0x{1,8:X8}, 0x{2,8:X8}, 0x{3,8:X8} }}}}, // {4}",
+							  bits[0], bits[1], bits[2], bits[3], value);
+		}
+		Console.WriteLine("};");
+		Console.WriteLine();
+		
+		Console.WriteLine("static s21_decimal result[] = {");
+		foreach (var value in values) {
+            decimal tmp = decimal.Floor(value);
+			int[] bits = decimal.GetBits(tmp);
+			Console.WriteLine("{{{{ 0x{0,8:X8}, 0x{1,8:X8}, 0x{2,8:X8}, 0x{3,8:X8} }}}}, //{4}",
+							  bits[0], bits[1], bits[2], bits[3], tmp);
+		}
+		Console.WriteLine("};");
+   }
+}

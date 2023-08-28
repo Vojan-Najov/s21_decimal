@@ -1,0 +1,59 @@
+using System;
+
+public class Program
+{
+	public static void Main()
+	{
+		int[] values = {
+			0,
+			-1,
+			1,
+			-2,
+			2,
+			-3,
+			3,
+			-10,
+			10,
+			-128,
+			127,
+			255,
+			-32768,
+			32767,
+			-32767,
+			137,
+			342,
+			-32860,
+			33223,
+			56210,
+			-65535,
+			65535,
+			212818281,
+			-2818281,
+			-2147483647,
+			100,
+			1782,
+			-821821,
+			218128,
+			9999,
+			-9999999,
+			2147483647,
+			-2147483648,
+		};
+		
+		Console.WriteLine("static int src[] = {");
+		foreach (var value in values) {
+			Console.WriteLine("{0},", value); 
+		}
+		Console.WriteLine("};");
+		Console.WriteLine();
+
+		Console.WriteLine("static s21_decimal dst[] = {");
+		foreach (var value in values) {
+			decimal tmp = value;
+			int[] bits = Decimal.GetBits(tmp);
+			Console.WriteLine("{{{{ 0x{0,8:X8}, 0x{1,8:X8}, 0x{2,8:X8}, 0x{3,8:X8} }}}}, // {4,-10}",
+							  bits[0], bits[1], bits[2], bits[3], tmp);
+		}
+		Console.WriteLine("};");
+	}
+}

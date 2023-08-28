@@ -1,0 +1,193 @@
+using System;
+
+public class Program
+{
+	public static void Main()
+	{
+		decimal[] num1 = {
+			12345.67M,
+			12345.67M,
+			-12345.67M,
+			-12345.67M,
+			788M,
+			123.00M,
+			123M,
+			10M,
+            10M,
+            182M,
+            127217M,
+            -212M,
+            -218218.87M,
+            0M,
+            1219.92M,
+            -19219.19M,
+            1281828112.2118M,
+            1281828112.2118M,
+            873M,
+            decimal.MaxValue,
+            decimal.MaxValue,
+            decimal.MaxValue,
+            decimal.MinValue,
+            decimal.MinValue,
+            0.00000000000122121M,
+            0.000000000001311331M,
+			new Decimal(-1, 0, -1, false, 0),
+			18.3M,
+			18.3M,
+			-18.3M,
+			-18.3M,
+			1245.56000M,
+			9048471.38920304847829M,
+			24.4M,
+			16.598M,
+			189.87M,
+			-1589.3M,
+			79228162514264337593543.950335M,
+			19.3M,
+			939443843942303.404929M,
+			239443841303.404929M,
+			939443843221303.404929M,
+			930339443843942303.404929M,
+			939443843942303.1221404929M,
+            };
+		decimal[] num2 = {
+			12345.67M,
+			-12345.67M,
+			12345.67M,
+			-12345.67M,
+			17.7M,
+			123M,
+			123.00M,
+        	5M,
+            20010M,
+            101M,
+            83737172M,
+            -17M,
+            -2172182112.29M,
+            10M,
+            -18281.281M,
+            29192M,
+            218218218.123M,
+			21291.92921M,
+            891271M,
+            76.33M,
+            765.3M,
+            -765.3M,
+            765.3M,
+            -765.3M,
+            0.000000000000000000000922121M,
+            38381.182128M,
+			2.783M,
+			20.45M,
+			-20.45M,
+			20.45M,
+			-20.45M,
+			1245.56M,
+			9484.3631182M,
+			1.22M,
+			12.3M,
+			0.056789M,
+			765.3M,
+        	80000000000000000000.111111111M, 
+			6.45M,
+			189.87M,
+			21821821.3819M,
+			-0.000021812M,
+			0.00789M,
+			128.00001281M,
+		};
+		decimal[] err_num1 = {
+			decimal.MaxValue,
+			decimal.MaxValue,
+			decimal.MinValue,
+			decimal.MinValue,
+			32823.03M,
+			0.004M,
+		};
+		decimal[] err_num2 = {
+			0.003M,
+			-0.4M,
+			0.9M,
+			-0.78M,
+			0M,
+			-0.00M,
+		};
+
+		Console.WriteLine("{0,10:X8}  {1,10:X8}  {2,10:X8}  {3,10:X8}       {4}",
+						  "Bits[0]", "Bits[1]", "Bits[2]", "Bits[3]", "Argument");
+		Console.WriteLine();
+		Console.WriteLine("static s21_decimal num1[] = {");
+		int i = 0;
+		foreach (var value in num1) {
+			int[] bits = decimal.GetBits(value);
+            Console.WriteLine("{{{{0x{0,8:X8}, 0x{1,8:X8}, 0x{2,8:X8}, 0x{3,8:X8} }}}}, //{4,2}: {5}",
+							  bits[0], bits[1], bits[2], bits[3], i, value);
+			++i;
+		}
+        Console.WriteLine("};");
+        Console.WriteLine();
+        
+		Console.WriteLine("static s21_decimal num2[] = {");
+		i = 0;
+        foreach (var value in num2) {
+			int[] bits = decimal.GetBits(value);
+            Console.WriteLine("{{{{ 0x{0,8:X8}, 0x{1,8:X8}, 0x{2,8:X8}, 0x{3,8:X8} }}}}, //{4,2}: {5}",
+							  bits[0], bits[1], bits[2], bits[3], i, value);
+        	++i;
+		}
+        Console.WriteLine("};");
+        Console.WriteLine();
+		
+		Console.WriteLine("static s21_decimal result[] = {");
+        i = 0;
+        foreach (var value in num1) {
+        	decimal tmp = value % num2[i];
+            int[] bits = decimal.GetBits(tmp);
+            Console.WriteLine("{{{{ 0x{0,8:X8}, 0x{1,8:X8}, 0x{2,8:X8}, 0x{3,8:X8} }}}}, //{4,2}: {5}",
+							  bits[0], bits[1], bits[2], bits[3], i, tmp);
+            ++i;
+        }
+        Console.WriteLine("};");
+		Console.WriteLine();
+		
+		Console.WriteLine("static s21_decimal err_num1[] = {");
+	 	i = 0;
+		foreach (var value in err_num1) {
+			int[] bits = decimal.GetBits(value);
+            Console.WriteLine("{{{{0x{0,8:X8}, 0x{1,8:X8}, 0x{2,8:X8}, 0x{3,8:X8} }}}}, //{4,2}: {5}",
+							  bits[0], bits[1], bits[2], bits[3], i, value);
+			++i;
+		}
+        Console.WriteLine("};");
+        Console.WriteLine();
+        
+		Console.WriteLine("static s21_decimal err_num2[] = {");
+		i = 0;
+        foreach (var value in err_num2) {
+			int[] bits = decimal.GetBits(value);
+            Console.WriteLine("{{{{ 0x{0,8:X8}, 0x{1,8:X8}, 0x{2,8:X8}, 0x{3,8:X8} }}}}, //{4,2}: {5}",
+							  bits[0], bits[1], bits[2], bits[3], i, value);
+        	++i;
+		}
+        Console.WriteLine("};");
+        Console.WriteLine();
+		
+		Console.WriteLine("static int err_result[] = {");
+        i = 0;
+        foreach (var value in err_num1) {
+			try {
+        		decimal tmp = value % err_num2[i];
+			} catch (OverflowException e) {
+				if ((err_num1[i] > 0M && err_num2[i] > 0M) || (err_num1[i] < 0M && err_num2[i] < 0M)) {
+					Console.WriteLine("1,");
+				} else if ((err_num1[i] > 0M && err_num2[i] < 0M) || (err_num1[i] < 0M && err_num2[i] > 0M)) {
+					Console.WriteLine("2,");	
+				}
+			} catch (DivideByZeroException e) {
+				Console.WriteLine("3,");	
+			}
+			++i;
+        }
+        Console.WriteLine("};");
+	}
+}
