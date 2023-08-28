@@ -5,13 +5,13 @@
 
 #define S21_DECIMAL_MAX_SCALE 28
 
-#define S21_DECIMAL_RESET_TO_ZERO(bits) \
+#define S21_DECIMAL_RESET_TO_ZERO(bits)                                        \
   (bits)[0] = (bits)[1] = (bits)[2] = (bits)[3] = 0;
 
-#define S21_DECIMAL_COPY(dst_bits, src_bits) \
-  (dst_bits)[0] = (src_bits)[0];             \
-  (dst_bits)[1] = (src_bits)[1];             \
-  (dst_bits)[2] = (src_bits)[2];             \
+#define S21_DECIMAL_COPY(dst_bits, src_bits)                                   \
+  (dst_bits)[0] = (src_bits)[0];                                               \
+  (dst_bits)[1] = (src_bits)[1];                                               \
+  (dst_bits)[2] = (src_bits)[2];                                               \
   (dst_bits)[3] = (src_bits)[3];
 
 extern const s21_decimal S21_DECIMAL_UNIT;

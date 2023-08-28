@@ -3,25 +3,25 @@
 
 #include "s21_decimal.h"
 
-#define S21_UINT192_RESET_TO_ZERO(bits) \
-  for (int i = 0; i < 6; ++i) {         \
-    (bits)[i] = 0;                      \
+#define S21_UINT192_RESET_TO_ZERO(bits)                                        \
+  for (int i = 0; i < 6; ++i) {                                                \
+    (bits)[i] = 0;                                                             \
   }
 
-#define S21_UINT192_COPY(dst_bits, src_bits) \
-  for (int i = 0; i < 6; ++i) {              \
-    (dst_bits)[i] = (src_bits)[i];           \
+#define S21_UINT192_COPY(dst_bits, src_bits)                                   \
+  for (int i = 0; i < 6; ++i) {                                                \
+    (dst_bits)[i] = (src_bits)[i];                                             \
   }
 
-#define S21_UINT192_FROM_DECIMAL(dst_bits, src_bits) \
-  (dst_bits)[0] = (src_bits)[0];                     \
-  (dst_bits)[1] = (src_bits)[1];                     \
-  (dst_bits)[2] = (src_bits)[2];                     \
+#define S21_UINT192_FROM_DECIMAL(dst_bits, src_bits)                           \
+  (dst_bits)[0] = (src_bits)[0];                                               \
+  (dst_bits)[1] = (src_bits)[1];                                               \
+  (dst_bits)[2] = (src_bits)[2];                                               \
   (dst_bits)[3] = (dst_bits)[4] = (dst_bits)[5] = 0;
 
-#define S21_UINT192_TO_DECIMAL(dst_bits, src_bits) \
-  (dst_bits)[0] = (src_bits)[0];                   \
-  (dst_bits)[1] = (src_bits)[1];                   \
+#define S21_UINT192_TO_DECIMAL(dst_bits, src_bits)                             \
+  (dst_bits)[0] = (src_bits)[0];                                               \
+  (dst_bits)[1] = (src_bits)[1];                                               \
   (dst_bits)[2] = (src_bits)[2];
 
 typedef struct s21_uint192 {
